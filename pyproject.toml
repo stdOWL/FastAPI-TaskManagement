@@ -4,6 +4,7 @@ version = "0.1.0"
 description = ""
 authors = ["stdOWL <osman.ozturk2@hotmail.com>"]
 readme = "README.md"
+package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.12"
@@ -14,6 +15,9 @@ pydantic = "^2.9.2"
 pydantic-settings = "^2.6.1"
 psycopg = "^3.2.3"
 greenlet = "^3.1.1"
+pytest = "^8.3.3"
+httpx = "^0.27.2"
+pytest-asyncio = "^0.24.0"
 
 
 [build-system]

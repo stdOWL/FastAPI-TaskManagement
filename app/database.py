@@ -10,7 +10,7 @@ from sqlalchemy.ext.asyncio import (
     create_async_engine,
 )
 
-from config import configuration
+from app.config import configuration
 
 engine = create_engine(url=configuration.SQLALCHEMY_DATABASE_URL)
 
