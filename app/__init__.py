@@ -14,11 +14,11 @@ app = FastAPI(title="Task Management API",
               description="A FastAPI-based Task Management API for creating, updating, retrieving, and deleting "
                           "tasks. This API supports PostgreSQL for database management.",
               openapi_tags=[
-                    {
-                        "name": "Tasks",
-                        "description": "Operations related to tasks"
-                    }
-                ])
+                  {
+                      "name": "Tasks",
+                      "description": "Operations related to tasks"
+                  }
+              ])
 app.include_router(router=api_router)
 
 Base.metadata.create_all(engine)
@@ -26,6 +26,13 @@ Base.metadata.create_all(engine)
 
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: RequestValidationError):
+    if len(exc.errors()) > 0 and exc.errors()[0]["msg"] == "Field required":
+        error = f"{exc.errors()[0]['loc'][1]} must be filled."
+        return JSONResponse(
+            ResponseModel(data=error, status=ResponseStatus.FAIL, message="Fill in the required fields.",
+                          error_code="VLDN-1000").model_dump(),
+            status_code=400)
+
     error = exc.errors()[0]["msg"].replace("Value error, ", "") if exc.errors()[0].get("type",
                                                                                        None) == "value_error" else \
         exc.errors()[0].get("msg", None)
