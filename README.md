@@ -31,8 +31,8 @@ FastAPI-TaskManagement-DM/
 1. **Clone the repository**:
 
    ```bash
-   git clone <repository-url>
-   cd FastAPI-TaskManagement-DM
+   git clone https://github.com/stdOWL/FastAPI-TaskManagement.git
+   cd FastAPI-TaskManagement
    ```
 
 2. **Install dependencies**:
@@ -52,7 +52,7 @@ FastAPI-TaskManagement-DM/
 5. **Run the application**:
 
    ```bash
-   poetry run uvicorn app.main:app --reload
+   poetry run uvicorn app:app --reload
    ```
 
 6. **Run tests**:
