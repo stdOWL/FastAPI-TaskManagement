@@ -11,7 +11,8 @@ from app.routers import api_router
 from app.schemas import ResponseModel, ResponseStatus
 
 app = FastAPI(title="Task Management API",
-              description="A FastAPI-based Task Management API for creating, updating, retrieving, and deleting tasks. This API supports PostgreSQL for database management.",
+              description="A FastAPI-based Task Management API for creating, updating, retrieving, and deleting "
+                          "tasks. This API supports PostgreSQL for database management.",
               openapi_tags=[
                     {
                         "name": "Tasks",

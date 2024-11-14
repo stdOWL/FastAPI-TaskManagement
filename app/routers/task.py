@@ -1,9 +1,13 @@
-from fastapi import APIRouter, Depends, Path, HTTPException
+from typing import Union
+
+from fastapi import APIRouter, Depends, Path, HTTPException, Query
 from fastapi.encoders import jsonable_encoder
+from pydantic import Field
 from sqlalchemy.ext.asyncio import AsyncSession
+from starlette.responses import Response
 
 from app.core.task import TaskCore
-from app.dependencies import get_async_db
+from app.dependencies import get_async_db, get_list_headers
 from app.schemas import ResponseModel
 from app.schemas.task import CreateTaskRequest, UpdateTaskRequest, PartialUpdateTaskRequest
 
@@ -23,13 +27,18 @@ async def create(task_request: CreateTaskRequest, db: AsyncSession = Depends(get
 
 
 @router.get("", response_model=ResponseModel)
-async def get_all(db: AsyncSession = Depends(get_async_db)):
+async def get_all(response: Response, db: AsyncSession = Depends(get_async_db),
+                  headers: dict = Depends(get_list_headers),
+                  task_status: Union[bool, None] = Query(None, description="Filter tasks by status")):
     """
     Get all tasks from the database with pagination
+    :param task_status: Optional parameter to filter tasks by status (True for completed, False for pending)
+    :param response: Response from FastAPI to set the headers for pagination
+    :param headers: dict with the page and page size
     :param db: AsyncSession from get_async_db dependency
     :return: ResponseModel with the list of tasks
     """
-    db_obj = await TaskCore.get_all(db)
+    db_obj = await TaskCore.get_all_paginated(db, task_status, response, headers['pagesize'], headers['page'])
     return ResponseModel(data=db_obj)
 
 
